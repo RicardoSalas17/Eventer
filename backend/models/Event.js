@@ -8,22 +8,24 @@ const eventSchema = new Schema(
     description: String,
     image:String,
     point: {
-        type: {
+        
           address: {
             type: String,
-            require: true
+
           },
           coordinates: {
             type: [Number],
-            require: true
-          }
-        },
-        require: true
+
+          },
       },
-        creatorId:{
-            type:Schema.Types.ObjectId,
-            ref:'User'
-          }
+      owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      },
+      comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
+      }]
   },
   {
     timestamps: true,
@@ -34,3 +36,6 @@ const eventSchema = new Schema(
 
 
 module.exports = model('Event', eventSchema);
+
+
+

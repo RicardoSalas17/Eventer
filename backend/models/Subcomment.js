@@ -4,9 +4,9 @@ const subCommentSchema = new Schema(
   {
     content:String,
     image:String,
-    creatorId:{
-        type:Schema.Types.ObjectId,
-        ref:'User'
+          owner: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
           },
 
   },
@@ -18,4 +18,4 @@ const subCommentSchema = new Schema(
 
 
 
-module.exports = model('Comment', subCommentSchema);
+module.exports = model('SubComment', subCommentSchema);

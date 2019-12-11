@@ -47,8 +47,15 @@ app.use(logger('dev'));
 
 const index = require('./routes/index');
 const auth = require('./routes/auth');
+const feed = require('./routes/feed');
+const comment = require('./routes/comment');
+const subcomment = require('./routes/subcomment');
+
 app.use('/', index);
 app.use('/', auth);
+app.use('/', feed);
+app.use('/', comment);
+app.use('/', subcomment);
 
 // Uncomment this line for production
 // app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
