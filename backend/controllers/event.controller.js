@@ -2,18 +2,18 @@ const Event = require("../models/Event");
 const User = require("../models/User");
 
 exports.getEvents = async (req, res) => {
-  const events = await Events.find().populate("comments");
+  const events = await Event.find().populate("comments");
   res.status(200).json({ events });
 };
 
 exports.getEvent = async (req, res) => {
   const { id } = req.params;
-  const event = await Event.findById(id).populate("comments");
+  const event = await Event.findById(id).populate("comments").populate("owner");
   res.status(200).json(event);
 };
 
 exports.createEvent = async (req, res) => {
-  const { name,
+  const { eventName,
     dateTime,
     localTime,
     description,
@@ -23,7 +23,7 @@ exports.createEvent = async (req, res) => {
   const { user } = req;
 
   const event = await Event.create({
-    name,
+    eventName,
     dateTime,
     localTime,
     description,
@@ -44,7 +44,7 @@ exports.createEvent = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
   const { 
-    name,
+    eventName,
     dateTime,
     localTime,
     description,
@@ -53,7 +53,7 @@ exports.updateEvent = async (req, res) => {
   const { id } = req.params;
 
   const event = await Event.findByIdAndUpdate( id, { 
-    name,
+    eventName,
     dateTime,
     localTime,
     description
