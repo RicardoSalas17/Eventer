@@ -23,7 +23,7 @@ const commentSchema = new Schema(
       },
           subComments:[
            { type:Schema.Types.ObjectId,
-            ref:'subComments'}
+            ref:'SubComment'}
           ]
   },
   {

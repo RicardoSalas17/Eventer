@@ -2,13 +2,33 @@ const Event = require("../models/Event");
 const User = require("../models/User");
 
 exports.getEvents = async (req, res) => {
-  const events = await Event.find().populate("comments");
+  const events = await Event.find().populate("owner")
+// .populate(
+//   {path:"owner", model:"User"}
+//     )
+    .populate({
+      path:"comments",
+        populate:{ 
+      path: "owner",
+      model:"User"
+    },
+    populate:{ 
+      path: "subComments",
+      model:"SubComment",
+      populate:{path:"owner"}
+    }
+  })
+
   res.status(200).json({ events });
 };
 
 exports.getEvent = async (req, res) => {
   const { id } = req.params;
-  const event = await Event.findById(id).populate("comments").populate("owner");
+  const event = await Event.findById(id).populate({
+    path: "owner",
+    options: { sort: { createdAt: 1 } }
+  })
+  
   res.status(200).json(event);
 };
 

@@ -12,7 +12,7 @@ const {
 // Projects
 // router.get("/comment", getComments);
 router.get("/comment/:id", getComment);
-router.post("/comments", createComment);
+router.post("/comments/:id", createComment);
 router.patch("/comments/:id", updateComment);
 router.delete("/comments/:id", deleteComment);
 

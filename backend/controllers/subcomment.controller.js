@@ -3,7 +3,7 @@ const Comment = require("../models/Comment");
 
 
 exports.getsubComments = async (req, res) => {
-  const subcomment = await SubComment.findById();
+  const subcomment = await SubComment.find();
   res.status(200).json(subcomment);
 };
 
@@ -14,7 +14,7 @@ exports.getsubComment = async (req, res) => {
 };
 
 exports.createsubComment = async (req, res) => {
-  console.log("hoa")
+  // console.log("hoa")
   const { 
     content
      // image
