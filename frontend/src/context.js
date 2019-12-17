@@ -71,7 +71,8 @@ class MyProvider extends Component {
   }
   
 
-    handleLogin = (e, cb) => {
+
+  handleLogin = (e, cb) => {
     e.preventDefault()
     MY_SERVICE.login(this.state.loginForm)
       .then(({ data }) => {
@@ -79,8 +80,7 @@ class MyProvider extends Component {
         cb()
       })
       .catch(err => {
-        Swal.fire(err)
-        console.log(err)
+        Swal.fire(`Quien sabe que paso`, '☠️', 'error')
       })
   }
 

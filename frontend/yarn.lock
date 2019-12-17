@@ -9411,7 +9411,7 @@ react-dev-utils@^10.0.0:
     strip-ansi "5.2.0"
     text-table "0.2.0"
 
-react-dom@^16.12.0:
+react-dom@^16.10.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
   integrity sha512-LMxFfAGrcS3kETtQaCkTKjMiifahaMySFDn71fZUNpPHZQEzmk/GiAeIT8JSOrHB23fnuCOMruL2a8NYlw+8Gw==
@@ -9459,7 +9459,7 @@ react-popper@^1.3.3:
     typed-styles "^0.0.7"
     warning "^4.0.2"
 
-react-router-dom@^5.1.1:
+react-router-dom@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.1.2.tgz#06701b834352f44d37fbb6311f870f84c76b9c18"
   integrity sha512-7BPHAaIwWpZS074UKaw1FjVdZBSVWEk8IuDXdB+OkLb8vd/WRQIpA4ag9WQk61aEfQs47wHyjWUoUGGZxpQXew==
@@ -9569,7 +9569,7 @@ react-transition-group@^2.3.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.12.0:
+react@^16.10.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==

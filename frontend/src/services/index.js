@@ -1,11 +1,11 @@
 import axios from 'axios';
 let baseURL;
 
-// process.env.NODE_ENV === 'production'
-//   ? (baseURL = 'here should be your production endpoint')
-  // : (
+process.env.NODE_ENV === 'production'
+  ? (baseURL = 'here should be your production endpoint')
+  : (
     baseURL = 'http://localhost:3000'
-    // );
+    );
 
 const service = axios.create({ withCredentials: true, baseURL });
 
@@ -17,9 +17,10 @@ const MY_SERVICE = {
   signup: async (user) => {
     return await service.post('/signup', user);
   },
-  login: async (user) => {
-    return await service.post('/login', user);
+  login: user => {
+    return service.post('/login', user);
   },
+
   logout: async () => {
     return await service.get('/logout');
   },
