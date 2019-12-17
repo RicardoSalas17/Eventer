@@ -1,0 +1,49 @@
+//LOGIN
+
+.login-div {
+  height: 95vh;
+  background: url("../img/login.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter: grayscale(50%);
+}
+
+//SIGNUP
+
+.signup-div {
+  height: 95vh;
+  background: url("../img/signup.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter: grayscale(50%);
+}
+
+//LOGIN & SIGNUP
+
+.login-div form,
+.signup-div form {
+  background: rgba(0, 0, 0, 0.788);
+  width: 35%;
+}
+
+.login-div button,
+.signup-div button {
+  border-radius: 45px;
+  padding-left: 15%;
+  padding-right: 15%;
+  background: rgb(3, 214, 39);
+  color: black;
+}
+
+.login-div button:hover,
+.signup-div button:hover {
+  background: rgb(38, 199, 65);
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .login-div form,
+  .signup-div form {
+    width: 90%;
+  }
+}

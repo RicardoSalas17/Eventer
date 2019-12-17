@@ -4,10 +4,10 @@ import { MyContext } from '../../context'
 
 export default class LoginContainer extends React.Component {
   componentDidMount() {
-    console.log(this.context)
     if (this.context.loggedUser) {
-      return this.props.history.push('/events')
+      return this.props.location.pathname.push('/events')
     }
+    
   }
 
   render() {
@@ -17,7 +17,7 @@ export default class LoginContainer extends React.Component {
           <Form
             onSubmit={e => {
               context.handleLogin(e, () => {
-                this.props.history.push('/events')
+                this.props.location.pathname.push('/events')
               })
             }}
           >
