@@ -3,22 +3,19 @@ const User = require("../models/User");
 
 exports.getEvents = async (req, res) => {
   const events = await Event.find().populate("owner")
-// .populate(
-//   {path:"owner", model:"User"}
-//     )
     .populate({
       path:"comments",
-        populate:{ 
-      path: "owner",
-      model:"User"
-    },
-    populate:{ 
+      populate:{ 
       path: "subComments",
       model:"SubComment",
       populate:{path:"owner"}
-    }
-  })
-
+      }
+      }).populate({
+    path:"comments",
+    populate:{ 
+    path: "owner",
+    model:"User",
+    }})
   res.status(200).json({ events });
 };
 
@@ -37,30 +34,58 @@ exports.createEvent = async (req, res) => {
     dateTime,
     localTime,
     description,
-    // image
+
           } = req.body
 
   const { user } = req;
+  let createEvent;
 
-  const event = await Event.create({
+  // const event = await Event.create({
+  //   eventName,
+  //   dateTime,
+  //   localTime,
+  //   description,
+  //   // image,
+  //   owner: user._id
+  // });
+  if (req.file) {
+    createEvent =  {
+      eventName,
+    dateTime,
+    localTime,
+    description,
+     owner: user._id,
+      image: req.file.secure_url
+      
+    }
+    console.log("adios")
+  }else {
+    createEvent ={
     eventName,
     dateTime,
     localTime,
     description,
-    // image,
     owner: user._id
-  });
-
+    } 
+    console.log("hola")
+    }
+    const eventCreated = await Event.create(createEvent);
   const userUpdated = await User.findByIdAndUpdate(
     user._id,
-    { $push: { events: event._id } },
+    { $push: { events:eventCreated._id } },
     { new: true }
   );
 
   req.user = userUpdated;
 
-  res.status(201).json(event);
+  res.status(201).json(eventCreated);
 };
+
+
+
+
+
+
 
 exports.updateEvent = async (req, res) => {
   const { 
