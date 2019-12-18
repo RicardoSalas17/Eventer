@@ -54,8 +54,8 @@ exports.createEvent = async (req, res) => {
     dateTime,
     localTime,
     description,
-     owner: user._id,
-      image: req.file.secure_url
+    owner: user._id,
+    image: req.file.secure_url
       
     }
     console.log("adios")

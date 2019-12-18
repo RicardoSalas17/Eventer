@@ -12,7 +12,7 @@ const {
 // Projects
 router.get("/events", getEvents);
 router.get("/events/:id", getEvent);
-router.post("/events", createEvent);
+router.post("/events", upload.single("image"), createEvent);
 router.patch("/events/:id", updateEvent);
 router.delete("/events/:id", deleteEvent);
 
