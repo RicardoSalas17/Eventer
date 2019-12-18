@@ -1,11 +1,30 @@
-import React from "react";
-// import { Link } from "react-router-dom";
+import React, { Component } from 'react'
+// import { Link } from 'react-router-dom'
+// import Card from '../styled-components/Card'
+import {
+  Button
+} from 'reactstrap';
+import axios from 'axios'
 
+const ENDPOINT = 'http://localhost:3000/events'
 
-function ProjectCards({ events }) {
-  
+class EventsCard extends Component {
+  state = {
+    events: []
+  }
+
+  async componentDidMount() {
+    const { data } = await axios.get(ENDPOINT)
+    this.setState({ events: [...data.events] })
+
+  }
+
+  render() {
+    const { events } = this.state
   return (
+  
     <>
+    <div className="row">
       {events.map(({ 
         eventName, 
         dateTime,
@@ -13,43 +32,41 @@ function ProjectCards({ events }) {
        description,
        owner,
        comments,
+       image,
        _id }
        ) => (
-        <article key={_id}>
-          <h2>eventName:{eventName}</h2>
-          <p>eventdate:{dateTime}</p>
-          <p>eventtime:{localTime}</p>
-          <p>eventdescription:{description}</p>
-            <small>EventOwner: {owner.name}</small>
 
-            <h2>Comments</h2>
-            {comments.map(({
-              content:commentcontent,
-              subComments,
-              owner:names,
-              _id,
-              })=>(
-                <article key={_id}>
-                <h3>CommentOwner:{names.name}</h3>
-                <p>CommentContent:{commentcontent}</p>
-                {subComments.map(({
-                  content:subcommentcontent,
-                  owner:ownersname,
-                  _id,
-                  })=>(
-                    <article key={_id}>
-                    <h6>subCommentOwner:{ownersname.name}</h6>
-                    <h6>subCommentContent:{subcommentcontent}</h6>
-                    
-                    </article>
-                  ))}
-                </article>
-              ))}
-
-        </article>
+   <div key={`${_id}`}  className="d-flex flex-row  w-100 eventos-div">
+   <div  className="w-25">
+   <img src={`${image}`} className="eventImage"alt={`${eventName}`} />
+   </div>
+   <div className="w-75 ">
+   <h2 className="text-center p-2">{eventName}</h2>
+   <h4 className="text-center"> Organizador: {owner.name} </h4>
+   <p>Fecha:{dateTime}</p>
+   <p>Hora:{localTime}</p>
+   <p>Descripción:{description}</p>
+   <div className="text-center">
+   <Button > 
+   <a href={`/events/${_id}`} type="button" >Detail</a>
+  </Button>
+  <Button > 
+  <a href={`/editevents/${_id}`} type="button" >Edit event</a>
+ </Button>
+   </div>
+  
+   </div>
+   </div>
         ))}
-    </>
-  );
-}
+       </div>
 
-export default ProjectCards;
+    </>
+
+       )};
+
+       }
+  export default EventsCard
+
+
+
+

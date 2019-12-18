@@ -10,7 +10,7 @@ import "./App.scss";
 
 
 ReactDOM.render( 
-     <MyProvider>
+   <MyProvider>
     <Router />
   </MyProvider>, document.getElementById('root'));
 

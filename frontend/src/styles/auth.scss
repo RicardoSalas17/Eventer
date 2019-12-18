@@ -18,6 +18,27 @@
   filter: grayscale(50%);
 }
 
+//SWAL
+
+.swal2-actions button{
+  border-radius: 45px !important;
+  background: rgb(3, 214, 39) !important;
+  color: black !important;
+}
+
+.swal2-popup{
+  background: rgba(0, 0, 0, 0.863) !important;
+
+}
+.swal2-success-circular-line-left, .swal2-success-circular-line-right, .swal2-success-fix{
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+.swal2-title, .swal2-content{
+  color: white !important;
+}
+
+
 //LOGIN & SIGNUP
 
 .login-div form,

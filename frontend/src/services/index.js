@@ -24,12 +24,31 @@ const MY_SERVICE = {
   logout: async () => {
     return await service.get('/logout');
   },
+
+  getUser: () => {
+    return service.get('/profile')
+  },
+
+  updateUser: async (data, form) => {
+    return await service.patch(data, form);
+  },
+
   createEvent: async (user) => {
     return await service.post('/events', user);
     
   },
   getEvents: async () => {
     return await service.get('/events');
+  },
+
+  getEvent: async () => {
+    return await service.get('/events/:id');
+  },
+
+  updateEvent: async (data, form) => {
+    console.log(form)
+
+    return await service.patch(data, form);
   },
 
   // Events: async () => {

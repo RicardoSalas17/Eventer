@@ -1,0 +1,19 @@
+// *{
+//     background: black
+// }
+
+.eventos-div{
+    background: rgba(128, 128, 128, 0.185);
+    margin: 2% 0 ;
+    padding: 2%;
+    border: green;
+    border-radius: 10px;
+    -webkit-box-shadow: 10px 10px 13px -6px rgba(38,66,5,1);
+-moz-box-shadow: 10px 10px 13px -6px rgba(38,66,5,1);
+box-shadow: 10px 10px 13px -6px rgba(38,66,5,1);
+}
+
+.eventImage{
+    width: 40vh;
+    height: 40vh;
+}

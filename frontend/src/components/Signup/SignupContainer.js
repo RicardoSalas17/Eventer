@@ -54,6 +54,15 @@ export default function SignupContainer(props) {
                 />
               </Form.Item>
 
+              <Form.Item>
+              <Input
+                name="image"
+                type="file"
+                placeholder="Image"
+                // value={this.state.formEvent.image}
+                onChange={e => context.handleFile(e, "file")}/>
+            </Form.Item>
+
               <Form.Item className="text-center">
                 <Button type="primary" htmlType="submit">
                   Signup
