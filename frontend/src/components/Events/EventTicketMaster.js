@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-// import Card from '../styled-components/Card'
+import { Button } from 'antd'
 import axios from 'axios'
 
 const ENDPOINT = 'https://app.ticketmaster.com/discovery/v2/events.json?countryCode=MX&apikey=3c27oyAcQSIQNGPt7bzLXHgBy8ZIahhV'
@@ -23,9 +23,6 @@ class EventTicketContainer extends Component {
       <div className="container">
 
       <div className="row">
-     
-
-
           {events.map(event => (
             <div className="d-flex flex-row  w-100 eventos-div" key={event.id} >
             <div className="w-25 h-100 align-items-center">
@@ -41,7 +38,11 @@ class EventTicketContainer extends Component {
             <p>Descripción:</p>
             <p>{event.info}</p>
             <div className="d-flex flex-row justify-content-between">
-            <a href={event.url}>Comprar boletos</a> <a type="button" href={`/events-tm/${event.id}`} >Detalles</a > 
+
+            <Button > 
+<Link exact to={`/events-tm/${event.id}`} type="button" >Detail</Link>
+</Button>
+            <a href={event.url}>Comprar boletos</a>
             </div>
            
             </div>

@@ -3,9 +3,7 @@ import { Form, Input, Button } from 'antd'
 import { MyContext } from '../../context'
 import MY_SERVICE from '../../services/index';
 import Swal from 'sweetalert2'
-// import ProjectsService from "../../services/ProjectsService";
 
-// const projectsService = new ProjectsService();
 
 export default class Editevent extends Component {
   state = {
@@ -34,25 +32,13 @@ export default class Editevent extends Component {
     });
   };
 
-  // addEvent = async e => {
-  //   e.preventDefault();
-  //   const { eventName, dateTime, localTime, description, image } = this.state;
-  //   const event = await this.context.handlecreateEvent({ eventName, dateTime, localTime, description, image });
-  //   alert("evento creado");
-  //   this.setState({
-  //       eventName: '',
-  //       dateTime: '',
-  //       localTime: '',
-  //       description: '',
-  //       image:''
-  //   });
-  // };
+
   editEvent = async e => {
     e.preventDefault();
     const { formEvent } = this.state;
     const formData = new FormData()
 
-    for(let key in this.state.formEvent){
+    for(let key in formEvent){
       formData.append(key, this.state.formEvent[key])
     }
     formData.append('image', this.state.file)
@@ -60,8 +46,7 @@ export default class Editevent extends Component {
 
     const event = await MY_SERVICE.updateEvent(`${this.props.location.pathname}`,formData)
 
-    console.log(event);
-    Swal.fire( 'Event created', 'success')
+    Swal.fire( 'Evento Editado', 'success')
     this.setState({ 
       formEvent: {
         eventName: '',
@@ -79,10 +64,14 @@ export default class Editevent extends Component {
     return (
         <MyContext.Consumer>
         {context => (
-      <>
-        <h1>App Event</h1>
+      <div className="backgroundCard">
+      <div class="text-center py-2 py-md-5">
+      <h1>Edit Event</h1>
+      
+      </div>
+     
         <Form
-            className="container"
+            className="container py-2 py-md-5"
             onSubmit={e => {
               this.editEvent(e)
               this.props.history.push('/events')
@@ -137,13 +126,13 @@ export default class Editevent extends Component {
               onChange={this.handleFile}/>
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item className="text-center">
             <Button type="primary" htmlType="submit">
               Create
             </Button>
           </Form.Item>
         </Form>
-      </>
+      </div>
     )}
     </MyContext.Consumer>
         )

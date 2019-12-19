@@ -1,30 +1,43 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
+import MY_SERVICE from '../../services/index';
+import { Link } from 'react-router-dom'
 // import Card from '../styled-components/Card'
+import { Skeleton } from 'antd'
 import {
   Button
 } from 'reactstrap';
-import axios from 'axios'
 
-const ENDPOINT = 'http://localhost:3000/events'
 
 class EventsCard extends Component {
   state = {
     events: []
   }
 
-  async componentDidMount() {
-    const { data } = await axios.get(ENDPOINT)
+  async componentDidMount()  {
+    const { data } = await MY_SERVICE.getEvents()
     this.setState({ events: [...data.events] })
-
+    
+  }
+  async componentDidUpdate()  {
+    const { data } = await MY_SERVICE.getEvents()
+    this.setState({ events: [...data.events] })
+    
   }
 
   render() {
     const { events } = this.state
+
+    if (!events) {
+      return (
+        <div className="App">
+        <Skeleton avatar paragraph={{ rows: 4 }} />
+        </div>
+      )
+    }
   return (
   
     <>
-    <div className="row">
+    <div className="row ">
       {events.map(({ 
         eventName, 
         dateTime,
@@ -48,10 +61,11 @@ class EventsCard extends Component {
    <p>Descripción:{description}</p>
    <div className="text-center">
    <Button > 
-   <a href={`/events/${_id}`} type="button" >Detail</a>
+   <Link exact to={`/events/${_id}`} type="button" >Detail</Link>
   </Button>
+  
   <Button > 
-  <a href={`/editevents/${_id}`} type="button" >Edit event</a>
+  <Link exact to={`/editevents/${_id}`} type="button" >Edit event</Link>
  </Button>
    </div>
   

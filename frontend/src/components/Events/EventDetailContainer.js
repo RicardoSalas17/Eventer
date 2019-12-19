@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 // import Card from '../styled-components/Card'
 import axios from 'axios'
-
-
-
+import { Skeleton } from 'antd'
 
 
 class EventDetailContainer extends Component {
@@ -22,23 +20,38 @@ class EventDetailContainer extends Component {
     if (!event) {
       return (
         <div className="App">
-          <img
-            src="https://thumbs.gfycat.com/SlimyElasticAnemonecrab-size_restricted.gif"
-            alt="loading"
-          />
+        <Skeleton avatar paragraph={{ rows: 4 }} />
         </div>
       )
     }
     return (
-      <div className="App">
-        <div>
-          <div>
-            <img src={event.images[0].url} alt={event.name} width="100px" />
+      <div className="container">
+        <div className="row">
+          <div className="row detalle-evento-privado-div my-3 ">
+            <div className="col-12 col-md-4">
+            <img src={event.images[0].url} alt={event.name} className="evento-privado-img py-auto"  />
+            </div>
+            <div className="col-12 col-md-6 text-white">
+              <h2 className="text-center">
+                {event.name} 
+              </h2>
+              <div className="py-3">
+                <p>
+                  <b>Fecha:</b>{event.dates.start.dateTime}
+                </p>
+                <p>
+                  <b>Horario:</b>{event.dates.start.localTime}
+                </p>
+                <p>
+                  <b>Descripción:</b>{event.info}
+                </p>
+              </div>
+            </div>
           </div>
-          <div label={event.name}></div>
         </div>
-        <input {...this.props} />
-      </div>
+
+        </div>
+
     )
   }
 }

@@ -5,14 +5,14 @@ const Comment = require("../models/Comment");
 
 exports.getComment = async (req, res) => {
 
-  const comment = await Comment.findById(id).populate("subComments");
+  const comment = await Comment.findById(id);
   res.status(200).json(comment);
 };
 
 exports.createComment = async (req, res) => {
   const { 
     content
-     // image
+    //  image
           } = req.body
 
   const { user } = req;

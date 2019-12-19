@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const upload = require('../config/Cloudinary')
+const upload = require('../config/cloudinary')
 
 router.get('/', (req, res, next) => {
   res.status(200).json({ msg: 'Working' });

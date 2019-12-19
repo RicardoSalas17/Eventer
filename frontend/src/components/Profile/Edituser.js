@@ -36,7 +36,7 @@ export default class EditUser extends Component {
     const { formUser } = this.state;
     const formData = new FormData()
 
-    for(let key in this.state.formUser){
+    for(let key in formUser){
       formData.append(key, this.state.formUser[key])
     }
     formData.append('image', this.state.file)
@@ -59,8 +59,8 @@ export default class EditUser extends Component {
     return (
         <MyContext.Consumer>
         {context => (
-      <>
-        <h1>App Event</h1>
+      <div className="backgroundprofile h-10">
+        <h1>Editar Perfil</h1>
         <Form
             className="container"
             onSubmit={e => {
@@ -95,7 +95,7 @@ export default class EditUser extends Component {
             </Button>
           </Form.Item>
         </Form>
-      </>
+      </div>
     )}
     </MyContext.Consumer>
         )

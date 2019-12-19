@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const upload = require('../config/Cloudinary')
+const upload = require('../config/cloudinary')
 const {
   getEvents,
   getEvent,
@@ -13,7 +13,7 @@ const {
 router.get("/events", getEvents);
 router.get("/events/:id", getEvent);
 router.post("/events", upload.single("image"), createEvent);
-router.patch("/events/:id", updateEvent);
+router.patch("/editevents/:id", upload.single("image"), updateEvent);
 router.delete("/events/:id", deleteEvent);
 
 

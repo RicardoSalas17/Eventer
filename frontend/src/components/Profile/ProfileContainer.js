@@ -1,16 +1,17 @@
 import React from "react";
-// import { Form, Input, Icon, Button } from "antd";
 import { MyContext } from "../../context";
+import { Link } from 'react-router-dom'
 
 export default function ProfileContainer() {
 
+
   return (
     <MyContext.Consumer>
+    
       {context => (
+        
+        
       <div>
-      
-
-
       <div className="event-fondo">
       <div className="container">
         <div className="row detalle-perfil-div">
@@ -27,9 +28,9 @@ export default function ProfileContainer() {
             </h2>
             <p className="pt-4">{context.user.email} {}</p>
             <div className="text-center mt-2 mt-md-5">
-              <a className="event-button" href={`/editprofile/${context.user._id}`} >
+              <Link className="event-button" exact to={`/editprofile/${context.user._id}`} >
                 Editar
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -37,50 +38,60 @@ export default function ProfileContainer() {
           <div className="text-center p-3 p-md-5">
             <h2 className="titulo-mis-eventos">Mis eventos</h2>
           </div>
-          <div className="row detalle-evento-privado-div my-3 ">
+
+
+          {context.user.events.map(({ 
+            eventName, 
+            dateTime,
+            localTime,
+           description,
+           image,
+           _id
+          } ) => (
+
+          <div key={`${_id}`} className="row detalle-evento-privado-div my-3 ">
             <div className="col-12 col-md-4">
               <img
-                src="https://e00-marca.uecdn.es/assets/multimedia/imagenes/2019/06/30/15619149195288.jpg"
-                alt="Foto de evento"
+                src={`${image}`}
+                alt={`${eventName}`}
                 className="evento-privado-img py-auto"
               />
             </div>
+           
+            
             <div className="col-12 col-md-6 text-white">
               <h2 className="text-center">
                 {" "}
-                <b>Nombre del evento {} </b>{" "}
+                <b>{eventName} </b>{" "}
               </h2>
               <div className="py-3">
                 <p>
-                  <b>Fecha:</b>Fecha del evento{}
+                  <b>Fecha:</b>{dateTime}
                 </p>
                 <p>
-                  <b>Horario:</b>Horario del evento{}
+                  <b>Horario:</b>{localTime}
                 </p>
                 <p>
-                  <b>Descripción:</b>Descripcion{}
+                  <b>Descripción:</b>{description}
                 </p>
               </div>
 ​
               <div className="text-center mt-2">
-                <a className="event-button" href="/">
-                  Detalles
-                </a>
+               
+                <Link className="event-button" exact to={`/events/${_id}`} type="button" >Detail</Link>
               </div>
             </div>
-          </div>
+            </div>
+            ))}
+
         </div>
       </div>
     </div>
-
-
-
-
-     
      </div>
       )}
 
 
     </MyContext.Consumer>
-  );
-}
+  );}
+
+

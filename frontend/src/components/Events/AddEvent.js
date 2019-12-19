@@ -4,7 +4,7 @@ import { MyContext } from '../../context'
 import MY_SERVICE from '../../services/index';
 import Swal from 'sweetalert2'
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
-import mapboxgl from 'mapbox-gl' //npm i mapbox-gl o yarn add mapbox-gl
+import mapboxgl from 'mapbox-gl' 
 // import ProjectsService from "../../services/ProjectsService";
 
 // const projectsService = new ProjectsService();
@@ -19,10 +19,12 @@ export default class AddEvent extends Component {
         dateTime: '',
         localTime: '',
         description: '',
-      
+        lng: '',
+        lat: '',
+        direction:''},
         lng: 5,
-    lat: 34,
-    zoom: 1.5},
+        lat: 34,
+        zoom: 1.5,
         file: {},
   };
 
@@ -44,16 +46,17 @@ export default class AddEvent extends Component {
 
   addEvent = async e => {
     e.preventDefault();
-    const { formEvent } = this.state;
+    const { formEvent,
+      } = this.state;
     const formData = new FormData()
 
-    for(let key in this.state.formEvent){
+    for(let key in formEvent){
       formData.append(key, this.state.formEvent[key])
     }
     formData.append('image', this.state.file)
 
+    
     const event = await MY_SERVICE.createEvent(formData)
-
     Swal.fire( 'Event created', 'success')
     this.setState({ 
       formEvent: {
@@ -61,14 +64,17 @@ export default class AddEvent extends Component {
         dateTime: '',
         localTime: '',
         description: '',
-        image:''
+        image:'',
+        lng: '',
+        lat: '',
+        direction:''
       }
     })
     this.props.history.push('/events')
   };
 
   componentDidMount() {
-    const { lng, lat, zoom } = this.state.formEvent
+    const { lng, lat, zoom } = this.state
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken
     })
@@ -85,19 +91,33 @@ export default class AddEvent extends Component {
       this.setState({
         lng: lng.toFixed(4),
         lat: lat.toFixed(4),
-        zoom: map.getZoom().toFixed(2)
+        zoom: map.getZoom().toFixed(15)
       })
     })
     
     map.addControl(geocoder)
-    geocoder.on('result', (e) => console.log(e))
+    geocoder.on('result', (e) => {
+      
+
+      this.setState({
+        formEvent:{
+        lng: e.result.geometry.coordinates[0],
+        lat: e.result.geometry.coordinates[1],
+        direction:`${e.result.place_name}`
+        }
+      })
+
+    })
   }
   render() {
     return (
         <MyContext.Consumer>
         {context => (
-      <>
-        <h1>App Event</h1>
+      <div className="backgroundCard">
+
+      <div className="text-center">
+      <h1>Add Event</h1>
+      </div>
         <Form
             className="container"
             onSubmit={e => {
@@ -107,7 +127,7 @@ export default class AddEvent extends Component {
               // context.handleEvents()
             }}
             >
-            
+            <div className="map" style={{ width: '400px', height: '300px'}} ref={e => (this.mapContainer = e)}/>
             <Form.Item>
             <Input
             name="eventName"
@@ -155,16 +175,22 @@ export default class AddEvent extends Component {
               // value={this.state.formEvent.image}
               onChange={this.handleFile}/>
           </Form.Item>
-          <div style={{ width: '400px', height: '300px' }} ref={e => (this.mapContainer = e)}/>
+          
+          
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Create
             </Button>
           </Form.Item>
         </Form>
-      </>
+      </div>
     )}
     </MyContext.Consumer>
         )
         }
     }
+
+//     coordinates: Array(2)
+// 0: 36.33
+// 1: 41.28667
+// place_name_es-ES

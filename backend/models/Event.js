@@ -7,17 +7,9 @@ const eventSchema = new Schema(
     localTime: String,
     description: String,
     image:String,
-    point: {
-        
-          address: {
-            type: String,
-
-          },
-          coordinates: {
-            type: [Number],
-
-          },
-      },
+    lng: Number,
+        lat: Number,
+        direction:String,
       owner: {
         type: Schema.Types.ObjectId,
         ref: "User"

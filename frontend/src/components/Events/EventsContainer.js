@@ -17,11 +17,12 @@ export default class upContainer extends React.Component {
             
         
         
-          <div >
-          
+          <div className="backgroundEvents">
+          <div className="container">
+        
+
           <EventsCard/>
-  
-          </div>
+          </div>          </div>
        
       )}
     </MyContext.Consumer>

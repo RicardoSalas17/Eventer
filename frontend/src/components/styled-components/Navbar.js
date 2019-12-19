@@ -16,7 +16,7 @@ background: rgba(0, 0, 0, 0.863) !important;
   box-sizing: border-box;
   & a {
     padding: 5px;
-    color: black;
+    color: white;
     text-decoration: none;
   }
   & a.navbar-active {
@@ -81,7 +81,16 @@ function Navbar(props) {
                 </NavLink>
            
             )}
-
+            {context.loggedUser && (
+            
+              <NavLink
+              exact to="/events-tm" activeClassName="navbar-active"
+              >
+               Eventos PUBLICOS
+              </NavLink>
+         
+          )}
+            
             {context.loggedUser && (
               <span
                 onClick={() =>

@@ -1,38 +1,108 @@
 import React, { Component } from 'react'
+import MY_SERVICE from '../../services/index';
+import { MyContext } from "../../context";
+import { Form, Input, Button, Skeleton } from 'antd'
+
 // import Card from '../styled-components/Card'
-import axios from 'axios'
+import Swal from 'sweetalert2'
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
+import mapboxgl from 'mapbox-gl'
 
-
+mapboxgl.accessToken =
+'pk.eyJ1IjoiZGl1cml2aiIsImEiOiJjanAxdjA2cTQwMGp1M2tvYzZmZGp3bWc3In0.4cZEyLkU2ikqx_wb4A1z8A'
 
 
 
 class EventDetail extends Component {
 
-    state = {}
+    state = {
+      formComment:{
+        content: '',
+        image:'',
+        },
+        lng: 5,
+        lat: 34,
+        zoom: 15
+    }
+
 
     async componentDidMount() {
         const { id } = this.props.match.params
-        const { data } = await axios.get(`http://localhost:3000/events/${id}`)
+        const { data } = await MY_SERVICE.getEvent(`/events/${id}`)
+        this.setState({ event: { ...data } })
+
+
+        const {  zoom } = this.state
+        const geocoder = new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken
+        })
+        const map = new mapboxgl.Map({
+          container: this.mapContainer,
+          style: 'mapbox://styles/mapbox/streets-v9',
+          center: [data.lng, data.lat],
+          zoom
+        })
+    
+        map.addControl(geocoder)
+        geocoder.on('result', (e) => {
+          
+    
+          this.setState({
+            formEvent:{
+            lng: e.result.geometry.coordinates[0],
+            lat: e.result.geometry.coordinates[1],
+            direction:`${e.result.place_name}`
+            }
+          })
+    
+        })
+      }
+
+      async componentDidUpdate(){
+        const { id } = this.props.match.params
+        const { data } = await MY_SERVICE.getEvent(`/events/${id}`)
         this.setState({ event: { ...data } })
       }
 
+      inputChange = ({ target: {value, name} }) =>{
+        this.setState({
+          ...this.state,
+          formComment:{
+            ...this.state.formEvent,
+            [name]:value
+          }
+        });
+      };
 
-  render() {
+      handleComment = async e => {
+        const { id } = this.props.match.params
+        e.preventDefault();
+        const { formComment } = this.state;      
+        const comment = await MY_SERVICE.createComment(`/comments/${id}`,formComment)
+        
+        Swal.fire(`Comentario ${comment.owner} creado`, 'success')
+        this.setState({ 
+          formComment:{
+            content: '',
+            image:'',
+            }
+        })
+      };
+
+  render(props) {
     const { event } = this.state
     if (!event) {
       return (
         <div className="App">
-          <img
-            src="https://thumbs.gfycat.com/SlimyElasticAnemonecrab-size_restricted.gif"
-            alt="loading"
-          />
+        <Skeleton avatar paragraph={{ rows: 4 }} />
         </div>
       )
     }
     return (
-
-
-          <div className="evento-detalle-fondo">
+      <div className="evento-detalle-fondo">
+ <MyContext.Consumer>
+      {context => (
+      <div >
       <div className="container">
         <div className="row">
           <div className="row detalle-evento-privado-div my-3 ">
@@ -41,8 +111,8 @@ class EventDetail extends Component {
             </div>
             <div className="col-12 col-md-6 text-white">
               <h2 className="text-center">
-                {" "}
-                <b>Nombre del evento {event.eventName} </b>{" "}
+               
+                {event.eventName} 
               </h2>
               <div className="py-3">
                 <p>
@@ -54,59 +124,90 @@ class EventDetail extends Component {
                 <p>
                   <b>Descripción:</b>{event.description}
                 </p>
-
+            
+                <div className="map mapcontainer" style={{ width: '400px', height: '300px'}} ref={e => (this.mapContainer = e)}/>
                 
-                
-              </div>
-​
-              <div className="text-center mt-2">
-                <a className="event-button" href="/">
-                  Comentar
-                </a>
               </div>
             </div>
           </div>
         </div>
-​
-        <div className="text-center p-3 p-md-5">
+
+​  
+       <div className="text-center p-3 p-md-5">
           <h2 className="titulo-mis-eventos">Comentarios</h2>
         </div>
 ​
-        <div className="row">
+
+{event.comments.map(({ 
+  content,
+  owner,
+ _id }  
+ ) => ( 
+    <div>
+    
+        <div key={`${_id}`} className="row my-4 div-comentario">
           <div className="col-2">
             <img
-              src="https://image.freepik.com/vector-gratis/perfil-avatar-hombre-icono-redondo_24640-14044.jpg"
+              src={`${owner.image}`}
               alt="Foto de perfil"
               className="w-100"
             />
           </div>
           <div className="col-10">
             <p>
-              <b>Nombre del autor del comentario</b>
+              <b>{owner.name}</b>
             </p>
-            <p>Comentario</p>
+            <p>{content}</p>
           </div>
         </div>
-        <div className="row ml-5">
-          <div className="col-2">
-            <img
-              src="https://image.freepik.com/vector-gratis/perfil-avatar-hombre-icono-redondo_24640-14044.jpg"
-              alt="Foto de perfil"
-              className="w-100"
-            />
-          </div>
-          <div className="col-10">
-            <p>
-              <b>Nombre del autor del subcomentario comentario</b>
-            </p>
-            <p>Comentario</p>
-          </div>
         </div>
+        ))}
+
+
       </div>
+
+      
+    
+
     </div>
+      )}
+    
+
+    </MyContext.Consumer>
+
+    <Form
+    className=" p-2 p-md-5 "
+    onSubmit={e => {
+      this.handleComment(e);
+      // props.history.push("/events");
+    }}
+  >
+
+    <Form.Item>
+      <Input
+        name="content"
+        placeholder="Comment.."
+        type="text"
+        value={this.state.formComment.content}
+        onChange={this.inputChange}
+      />
+    </Form.Item>
+
+
+    <Form.Item className="text-center">
+      <Button type="primary" htmlType="submit">
+        Comment
+      </Button>
+    </Form.Item>
+  </Form>
+  </div>
+  );}
+
+          
         
-    )
+    
   }
-}
+
 
 export default EventDetail
+

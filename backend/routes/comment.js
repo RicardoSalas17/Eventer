@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const upload = require('../config/Cloudinary')
+const upload = require('../config/cloudinary')
 const {
 //   getComments,
   getComment,

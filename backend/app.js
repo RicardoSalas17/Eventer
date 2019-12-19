@@ -20,10 +20,11 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 const app = express();
 
+const whitelist ="https://eventer-r.herokuapp.com/"
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.FRONTENDPOINT]
+    origin: whitelist,
   })
 );
 
@@ -49,15 +50,15 @@ const index = require('./routes/index');
 const auth = require('./routes/auth');
 const feed = require('./routes/feed');
 const comment = require('./routes/comment');
-const subcomment = require('./routes/subcomment');
+// const subcomment = require('./routes/subcomment');
 
 app.use('/', index);
 app.use('/', auth);
 app.use('/', feed);
 app.use('/', comment);
-app.use('/', subcomment);
+// app.use('/', subcomment);
 
 // Uncomment this line for production
-// app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 module.exports = app;

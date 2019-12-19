@@ -24,29 +24,37 @@ class MyProvider extends Component {
     localTime: '',
     description: '',
     image:'',
-
     },
+    formComment:{
+      content: '',
+      image:'',
+      },
     user: {},
     events:'Loading...',
     file:{}
 
   }
 
-  async componentDidMount() {
-    if (document.cookie) {
-      // MY_SERVICE.getUser()
-      //   .then(({ data }) => { 
-      //     this.setState({ loggedUser: true, user: data.user, events:data.events })
-      //     Swal.fire(`Welcome back ${data.user.name} `, '', 'success')
-      //   })
-      //   .catch(err => console.log(err))
-      this.handleUser()
+  componentDidMount() {
+    if (!document.cookie) {
+      MY_SERVICE.getUser()
+        .then(({ data }) => {
+          this.setState({ loggedUser: true, user: data.user })
+          Swal.fire(`Welcome back ${data.user.name} `, '', 'success')
+        })
+        .catch(err => console.log(err))
     }
-
     this.handleEvents()
-  
   }
 
+  componentDidUpdate() {
+    MY_SERVICE.getUser()
+    .then(({ data }) => {
+      this.setState({ loggedUser: true, user: data.user })
+    })
+    .catch(err => console.log(err))
+
+  }
 
 
 
@@ -68,14 +76,16 @@ class MyProvider extends Component {
     const { formSignup } = this.state;
     const formData = new FormData()
 
-    for(let key in this.state.formSignup){
+    for(let key in formSignup){
       formData.append(key, this.state.formSignup[key])
     }
     formData.append('image', this.state.file)
 
     const user = await MY_SERVICE.signup(formData)
+
     
-    Swal.fire(`Bienvenido`, 'Gracias por registrate', 'success')
+    Swal.fire(`Bienvenido ${user.data.name}`, 'Gracias por registrate', 'success')
+    this.setState({ loggedUser: true, user: user.data })
     this.setState({ 
       formSignup: {
         name: '',
@@ -115,21 +125,6 @@ class MyProvider extends Component {
     })
     .catch(err => console.log(err))
   }
-
-
-
-handleUser= ()=>{
-      MY_SERVICE.getUser()
-        .then(({ data }) => { 
-          this.setState({ loggedUser: true, user: data.user, events:data.events })
-          Swal.fire(`Welcome back ${data.user.name} `, '', 'success')
-        })
-        .catch(err => console.log(err))
-}
-  
-
-
-
 
 
   render() {

@@ -5,10 +5,18 @@ const userSchema = new Schema(
   {
     name: String,
     email: String,
-    photoURL: String,
+    image: String,
     events: [{
       type: Schema.Types.ObjectId,
-      ref: "Event"
+      ref: "Event",
+      populate:{
+      path:"comments",
+      // populate:{ 
+      // path: "subComments",
+      // model:"SubComment",
+      // populate:{path:"owner"}
+      // }
+    }
     }]
   },
   

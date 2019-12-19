@@ -1,11 +1,10 @@
 import axios from 'axios';
-let baseURL;
+let baseURL='https://eventer-r.herokuapp.com'
 
-process.env.NODE_ENV === 'production'
-  ? (baseURL = 'here should be your production endpoint')
-  : (
-    baseURL = 'http://localhost:3000'
-    );
+// process.env.NODE_ENV === 'production'
+//   ? (baseURL = 'https://eventer-r.herokuapp.com')
+//   : 
+//   (baseURL = 'http://localhost:3000');
 
 const service = axios.create({ withCredentials: true, baseURL });
 
@@ -35,22 +34,24 @@ const MY_SERVICE = {
 
   createEvent: async (user) => {
     return await service.post('/events', user);
-    
   },
   getEvents: async () => {
     return await service.get('/events');
   },
 
-  getEvent: async () => {
-    return await service.get('/events/:id');
+  getEvent: async (data) => {
+    return await service.get(data);
   },
 
   updateEvent: async (data, form) => {
-    console.log(form)
+
 
     return await service.patch(data, form);
   },
 
+  createComment: async (data, form) => {
+    return await service.post(data, form);
+  }
   // Events: async () => {
   //   return await service.get('/events');
   // },

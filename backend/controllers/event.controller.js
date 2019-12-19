@@ -3,14 +3,7 @@ const User = require("../models/User");
 
 exports.getEvents = async (req, res) => {
   const events = await Event.find().populate("owner")
-    .populate({
-      path:"comments",
-      populate:{ 
-      path: "subComments",
-      model:"SubComment",
-      populate:{path:"owner"}
-      }
-      }).populate({
+   .populate({
     path:"comments",
     populate:{ 
     path: "owner",
@@ -21,10 +14,13 @@ exports.getEvents = async (req, res) => {
 
 exports.getEvent = async (req, res) => {
   const { id } = req.params;
-  const event = await Event.findById(id).populate({
-    path: "owner",
-    options: { sort: { createdAt: 1 } }
-  })
+  const event = await Event.findById(id).populate("owner")
+  .populate({
+  path:"comments",
+  populate:{ 
+  path: "owner",
+  model:"User",
+  }})
   
   res.status(200).json(event);
 };
@@ -34,40 +30,41 @@ exports.createEvent = async (req, res) => {
     dateTime,
     localTime,
     description,
-
+    lng,
+    lat,
+    direction,
           } = req.body
 
   const { user } = req;
   let createEvent;
 
-  // const event = await Event.create({
-  //   eventName,
-  //   dateTime,
-  //   localTime,
-  //   description,
-  //   // image,
-  //   owner: user._id
-  // });
+
   if (req.file) {
     createEvent =  {
       eventName,
     dateTime,
     localTime,
-    description,
+    description, 
+    lng,
+    lat,
+    direction,
     owner: user._id,
     image: req.file.secure_url
       
     }
-    console.log("adios")
+    
   }else {
     createEvent ={
     eventName,
     dateTime,
     localTime,
     description,
+    lng,
+    lat,
+    direction,
     owner: user._id
     } 
-    console.log("hola")
+    
     }
     const eventCreated = await Event.create(createEvent);
   const userUpdated = await User.findByIdAndUpdate(
@@ -84,28 +81,46 @@ exports.createEvent = async (req, res) => {
 
 
 
-
-
-
 exports.updateEvent = async (req, res) => {
-  const { 
+  const { eventName,
+    dateTime,
+    localTime,
+    description
+          } = req.body
+          const { id } = req.params
+          let eventUpdate
+
+  if (req.file) {
+     eventUpdate = await Event.findByIdAndUpdate(id,{
+      $set:
+    {  eventName,
+    dateTime,
+    localTime,
+    description,
+    image: req.file.secure_url}
+      
+    })}
+  else {
+     eventUpdate = await Event.findByIdAndUpdate(id,{
+    $set:
+   {
     eventName,
     dateTime,
     localTime,
     description,
-    // image 
-  } = req.body;
-  const { id } = req.params;
+    } 
+  })
+}
 
-  const event = await Event.findByIdAndUpdate( id, { 
-    eventName,
-    dateTime,
-    localTime,
-    description
-    // image
-  });
-  res.status(200).json(event);
+Event.findOneAndUpdate(id, eventUpdate) 
+
+  res.status(201).json(eventUpdate);
 };
+
+
+
+
+
 
 exports.deleteEvent = async (req, res) => {
   const { id } = req.params;
